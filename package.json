@@ -1,0 +1,20 @@
+{
+  "name": "wechat-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "tsc && node ./dist/index.js",
+    "tsc": "tsc -p ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^2.29.0",
+    "express": "^4.15.2",
+    "qrcode-terminal": "^0.11.0",
+    "request": "^2.81.0",
+    "wechat": "^2.1.0",
+    "wechaty": "^0.7.71"
+  }
+}
