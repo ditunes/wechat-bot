@@ -1,11 +1,11 @@
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
 import { Wechaty, Contact, Room, Message } from 'wechaty'
-const roomName: string = "test5"
-const resource: string = " 您的比特币资料 http://baidu.com"
+const roomName: string = "AT城市运动生活馆"
+const resource: string = "有一个开发看，\n http://baidu.com"
 const myName: string = "D调的暖冬"
 const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
 const noticeStrInSingle: string = "hello，很高兴认识你，如果没有成功邀请您入群，您可以回复:"
-    + "比特币"
+    + "比特币\n"
     + "我会马上拉你入群！aha"
 
 Wechaty.instance() // Singleton
@@ -89,10 +89,8 @@ function doActionByCommand(room: Room, msg: Message): void {
 }
 
 function doActionByCommandInSingle(room: Room,msg: Message, contact:Contact): void {
-    console.log(`see:${msg.content() == "比特币"}`)
     if(msg.content()==="比特币"){
-        console.log("拉人入群") 
-         console.log(`${room}-${contact}`)
+        console.log(`拉人入群${contact}`) 
         room.add(contact);
     }
 }
