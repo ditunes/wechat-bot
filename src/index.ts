@@ -3,10 +3,10 @@ import { Wechaty, Contact, Room, Message } from 'wechaty'
 const roomName: string = "test5"
 const resource: string = " 您的比特币资料 http://baidu.com"
 const myName: string = "D调的暖冬"
-const welcomeStr: string = `欢迎来到${roomName},请发送关键词：比特币给${myName}将会有很多惊喜噢1`
-const noticeStrInSingle: string = "hello，很高兴认识你如果没有成果邀请入群，您可以回复\n" +
-    +"比特币"
-    + "我会马上拉你入群\n"
+const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
+const noticeStrInSingle: string = "hello，很高兴认识你，如果没有成功邀请您入群，您可以回复:"
+    + "比特币"
+    + "我会马上拉你入群！aha"
 
 Wechaty.instance() // Singleton
     .on('scan', (url, code) => {
@@ -23,7 +23,7 @@ Wechaty.instance() // Singleton
             }
             room.on("join", async (inviteeList, inviter) => {
                 inviteeList.forEach((item) => {
-                    console.log(item)
+                    console.log(`来人了：${item}`)
                     if (room) {
                         room.say(welcomeStr, item)
                     }
@@ -33,7 +33,7 @@ Wechaty.instance() // Singleton
             if (contact == null) {
                 return;
             }
-            await addAllContract(room, [contact]);
+            addAllContract(room, [contact]);
         }, 2000)
     })
     .on('friend', async (contact: Contact, request?: FriendRequest) => {
@@ -59,11 +59,11 @@ Wechaty.instance() // Singleton
         }
         let msgRoom = message.room();
         let toContact = message.to();
-        // if (message.self()) {
-        //     return;
-        // }
+        if (message.self()) {
+            return;
+        }
         if(toContact && toContact.name() == myName ){
-            doActionByCommandInSingle(room,message,toContact)
+            doActionByCommandInSingle(room,message, message.from())
         }
 
         if (room && msgRoom) {
@@ -79,19 +79,20 @@ Wechaty.instance() // Singleton
     .init()
 function doActionByCommand(room: Room, msg: Message): void {
     let command = msg.content();
-    let target = msg.to();
-    if (target && target.name() == myName) {
+    if (command.includes("@" + myName)) {
         command = command.replace("@" + myName, "").trim();
-        console.log(command + "|")
         if (command === "比特币") {
-            console.log(command + "22")
+            console.log("收到指令:" + command)
             room.say(resource, msg.from());
         }
     }
 }
 
 function doActionByCommandInSingle(room: Room,msg: Message, contact:Contact): void {
-    if(msg.content()=="比特币"){
+    console.log(`see:${msg.content() == "比特币"}`)
+    if(msg.content()==="比特币"){
+        console.log("拉人入群") 
+         console.log(`${room}-${contact}`)
         room.add(contact);
     }
 }
@@ -110,7 +111,7 @@ function processContactListInRoom(room: Room, list: Array<Contact>, handler: (r:
 }
 
 function filterTargetRoomMsg(room: Room, message: Message) {
-    if (message.content().match("美女|fuck|妈蛋|我操")) {
+    if (message.content().match("美女|fuck|妈蛋|我操|傻逼")) {
         room.say("不要说脏话", message.from());
         //room.del(message.from());
     }
