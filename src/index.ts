@@ -1,12 +1,12 @@
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
 import { Wechaty, Contact, Room, Message } from 'wechaty'
-const roomName: string = "AT城市运动生活馆"
-const resource: string = "有一个开发看，\n http://baidu.com"
-const myName: string = "D调的暖冬"
+const roomName: string = "小白屋区块链活动群"
+const resource: string = "这里有一个区块链资源看板快去看看吧，小白欢迎小伙伴们一起添砖加瓦噢\n https://trello.com/b/yWFLtFO8/-"
+const myName: string = "小白助手"
 const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
-const noticeStrInSingle: string = "hello，很高兴认识你，如果没有成功邀请您入群，您可以回复:"
+const noticeStrInSingle: string = "hello，我是小白很高兴认识你，如果没有成功邀请您入群，您可以回复:"
     + "比特币\n"
-    + "我会马上拉你入群！aha"
+    + "我会马上拉你入群！haha"
 
 Wechaty.instance() // Singleton
     .on('scan', (url, code) => {
@@ -29,11 +29,7 @@ Wechaty.instance() // Singleton
                     }
                 })
             })
-            let contact = await Contact.find({ alias: "蔡拓" });
-            if (contact == null) {
-                return;
-            }
-            addAllContract(room, [contact]);
+            testAddSomeone(room);
         }, 2000)
     })
     .on('friend', async (contact: Contact, request?: FriendRequest) => {
@@ -94,6 +90,14 @@ function doActionByCommandInSingle(room: Room,msg: Message, contact:Contact): vo
         room.add(contact);
     }
 }
+
+ async function testAddSomeone(room:Room):Promise<void>{
+      let contact = await Contact.find({ alias: "乾坤" });
+            if (contact == null) {
+                return;
+            }
+            addAllContract(room, [contact]);
+ }
 
 
 function processContactListInRoom(room: Room, list: Array<Contact>, handler: (r: Room, c: Contact) => void): void {
