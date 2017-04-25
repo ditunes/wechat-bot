@@ -1,7 +1,8 @@
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
 import { Wechaty, Contact, Room, Message } from 'wechaty'
 const roomName: string = "厦门区块链活动交流群"
-const resource: string = "这里有一个区块链资源看板快去看看吧，小白欢迎小伙伴们一起添砖加瓦噢\n https://trello.com/b/yWFLtFO8/-"
+const resource: string = "这里有一个区块链资源看板快去看看吧，小白欢迎小伙伴们一起添砖加瓦噢 想要往里共享东西的小伙伴"  
++"把trello注册邮箱发给小助手哦! https://trello.com/b/yWFLtFO8/-"
 const myName: string = "小白助手"
 const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
 const noticeStrInSingle: string = "hello，我是小白很高兴认识你，如果没有成功邀请您入群，您可以回复:"
