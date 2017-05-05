@@ -1,8 +1,6 @@
-FROM zixia/wechaty
-WORKDIR /bot
-COPY ./dist/ .
-COPY package.json .
-RUN npm install 
-
-ENTRYPOINT [ ]
-CMD [ "node","index.js" ]
+FROM zixia/wechaty:onbuild
+#WORKDIR /bot
+FROM zixia/wechaty:onbuild
+RUN mkdir -p /bot/data
+ADD ./ /bot
+#CMD [ "npm","start" ]
