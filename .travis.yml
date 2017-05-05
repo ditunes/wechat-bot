@@ -5,7 +5,7 @@ services:
   - docker
 install:
   - npm install ts-node -g
-  - npm install types
+  - npm install
   - docker pull zixia/wechaty
   - docker run -ti --volume="$(pwd)":/bot --rm zixia/wechaty src/index.ts
 script:
