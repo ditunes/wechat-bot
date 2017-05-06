@@ -4,7 +4,8 @@ node_js:
 services:
   - docker
 addons:
-  - ssh_known_hosts: 47.92.88.211
+  ssh_known_hosts:
+    - 47.92.88.211
 install:
   # - npm install
   # - docker pull zixia/wechaty:onbuild
