@@ -4,10 +4,9 @@ node_js:
 services:
   - docker
 install:
-  - npm install ts-node -g
   - npm install
   - docker pull zixia/wechaty:onbuild
-  - docker run -ti --volume="$(pwd)":/bot --rm zixia/wechaty src/index.ts
+  - ./startup.sh
 script:
   - docker ps | grep -q wechat
 before_install:
