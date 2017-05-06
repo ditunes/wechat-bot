@@ -6,8 +6,9 @@ services:
 addons:
   - ssh_known_hosts: 47.92.88.211
 install:
-  - npm install
-  - docker pull zixia/wechaty:onbuild
+  # - npm install
+  # - docker pull zixia/wechaty:onbuild
+  - cat ~/.ssh/known_hosts
 # script:
 #   - ./startup.sh
 #   - docker ps | grep -q wechat
