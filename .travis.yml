@@ -16,4 +16,4 @@ after_success:
   - chmod 600 .travis/travis # this key should have push access
   - ssh-add .travis/travis
   - git remote add deploy https://github.com/ditunes/wechat-bot.git
-  - git push deploy
+  - git push deploy HEAD:master
