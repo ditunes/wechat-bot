@@ -16,4 +16,4 @@ after_success:
   - chmod 600 .travis/travis # this key should have push access
   - ssh-add .travis/travis
   - git remote add deploy ssh://root@47.92.88.211/root/wechat-bot-service
-  - git push deploy
+  - git push deploy HEAD:master
