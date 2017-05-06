@@ -3,6 +3,8 @@ node_js:
   - "7.9.0"
 services:
   - docker
+addons:
+  - ssh_known_hosts: 47.92.88.211
 install:
   - npm install
   - docker pull zixia/wechaty:onbuild
@@ -17,5 +19,4 @@ after_success:
   - ssh-add .travis/travis
   - git remote add deploy ssh://root@47.92.88.211/root/wechat-bot-service
   - git push deploy HEAD:master
-addons:
-- ssh_known_hosts: 47.92.88.211
+
