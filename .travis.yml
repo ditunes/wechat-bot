@@ -6,8 +6,8 @@ services:
 install:
   - npm install
   - docker pull zixia/wechaty:onbuild
-  - ./startup.sh
 script:
+  - ./startup.sh
   - docker ps | grep -q wechat
 before_install:
 - openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in travis.enc -out travis -d
