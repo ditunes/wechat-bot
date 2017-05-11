@@ -1,13 +1,11 @@
+import { Gender } from 'wechaty/dist/src/contact';
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
 import { Wechaty, Contact, Room, Message } from 'wechaty'
-const roomName: string = "厦门区块链活动交流群"
-const resource: string = "这里有一个区块链资源看板快去看看吧，小白欢迎小伙伴们一起添砖加瓦噢 想要往里共享东西的小伙伴"  
-+"把trello注册邮箱发给小助手哦! https://trello.com/b/yWFLtFO8/-"
-const myName: string = "小白助手"
-const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
-const noticeStrInSingle: string = "hello，我是小白很高兴认识你，如果没有成功邀请您入群，您可以回复:"
-    + "比特币\n"
-    + "我会马上拉你入群！haha"
+const roomName: string = "Scrum回顾游戏和活动引导之厦门AHA"
+//const resource: string = ""
+const myName: string = "厦门AHA侦探社"
+const welcomeStr: string = `欢迎来到${roomName}`
+const noticeStrInSingle: string = `hello，我是${myName}很高兴认识你，如果没有成功邀请您入群，您可以回复:AHA\n我会马上拉你入群！AHA`
 
 Wechaty.instance() // Singleton
     .on('scan', (url, code) => {
@@ -26,7 +24,11 @@ Wechaty.instance() // Singleton
                 inviteeList.forEach((item) => {
                     console.log(`来人了：${item}`)
                     if (room) {
-                        room.say(welcomeStr, item)
+                        if(item.gender() ==  Gender.Male || item.gender() ==Gender.Unknown){
+                            room.say("hello 帅哥"+welcomeStr, item)
+                        }else{
+                            room.say("hello 美女"+welcomeStr, item)
+                        }
                     }
                 })
             })
@@ -45,6 +47,7 @@ Wechaty.instance() // Singleton
         let room = await Room.find({ topic: roomName })
         if (room != null && newFriend != null) {
             addAllContract(room, [newFriend]);
+            contact.name();
             contact.say(noticeStrInSingle);
         } else {
             console.log(room == null ? "房间不存在" : "新朋友不存在");
@@ -78,10 +81,10 @@ function doActionByCommand(room: Room, msg: Message): void {
     let command = msg.content();
     if (command.includes("@" + myName)) {
         command = command.replace("@" + myName, "").trim();
-        if (command === "比特币") {
-            console.log("收到指令:" + command)
-            room.say(resource, msg.from());
-        }
+        // if (command === "比特币") {
+        //     console.log("收到指令:" + command)
+        //     room.say(resource, msg.from());
+        // }
     }
 }
 
