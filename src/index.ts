@@ -1,12 +1,12 @@
-import { Gender } from 'wechaty/dist/src/contact';
+//import { Gender } from 'wechaty/dist/src/contact';
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
 import { Wechaty, Contact, Room, Message } from 'wechaty'
 const roomName: string = "Scrum回顾游戏和活动引导"
 const resource: string = "Ethan活动报名名单https://shimo.im/sheet/Utl2QpUIqkAr3M1X?from=groupmessage&amp;isappinstalled=0500https://shimo.im/sheet/Utl2QpUIqkAr3M1X?from=groupmessage&amp;isappinstalled=00gh_eb1395bf42e7oldhomelh01"
 const myName: string = "厦门AHA侦探社"
-const welcomeStr: string = `欢迎来到${roomName},5月18日20点我们将在此群和Ethan面对面，有想问的问题可以提前发给我`
-const noticeStrInSingle: string = `hello，我是${myName}很高兴认识你，如果没有成功邀请您入群，您可以回复 AHA\n我会马上拉你入群！AHA`
-
+//const welcomeStr: string = `欢迎来到${roomName},5月18日20点我们将在此群和Ethan面对面，有想问的问题可以提前发给我`
+const noticeStrInSingle: string = `hello，我是${myName}很高兴认识你，我已经邀请你进入群：${roomName} 5月18日20点我们将在此群和Ethan面对面，有想问的问题可以提前发给我哦.`
+const inRoomNotice: string = "如果没有成功邀请您入群，您也可以回复 aha\n我会马上拉你入群！aha"
 Wechaty.instance() // Singleton
     .on('scan', (url, code) => {
         let loginUrl = url.replace('qrcode', 'l')
@@ -24,13 +24,13 @@ Wechaty.instance() // Singleton
                 console.log(inviteeList);
                 inviteeList.forEach((item) => {
                     console.log(`来人了：${item}`)
-                    if (room) {
-                        if (item.gender() == Gender.Male || item.gender() == Gender.Unknown) {
-                            room.say("hello 帅哥" + welcomeStr, item)
-                        } else {
-                            room.say("hello 美女" + welcomeStr, item)
-                        }
-                    }
+                    // if (room) {
+                    //     if (item.gender() == Gender.Male || item.gender() == Gender.Unknown) {
+                    //         room.say("hello 帅哥" + welcomeStr, item)
+                    //     } else {
+                    //         room.say("hello 美女" + welcomeStr, item)
+                    //     }
+                    // }
                 })
             })
         }, 2000)
@@ -49,6 +49,7 @@ Wechaty.instance() // Singleton
             addAllContract(room, [newFriend]);
             contact.name();
             contact.say(noticeStrInSingle);
+            contact.say(inRoomNotice);
         } else {
             console.log(room == null ? "房间不存在" : "新朋友不存在");
         }
@@ -115,7 +116,7 @@ function doActionByCommand(room: Room, msg: Message): void {
 }
 
 function doActionByCommandInSingle(room: Room, msg: Message, contact: Contact): void {
-    if (msg.content() === "AHA") {
+    if (msg.content().toLowerCase() ==  "aha") {
         console.log(`拉人入群${contact}`)
         room.add(contact);
     }
