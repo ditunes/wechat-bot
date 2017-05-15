@@ -1,7 +1,7 @@
 import { Gender } from 'wechaty/dist/src/contact';
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
 import { Wechaty, Contact, Room, Message } from 'wechaty'
-const roomName: string = "scrum回顾游戏和活动引导之厦门AHA"
+const roomName: string = "Scrum回顾游戏和活动引导"
 const resource: string = "Ethan活动报名名单https://shimo.im/sheet/Utl2QpUIqkAr3M1X?from=groupmessage&amp;isappinstalled=0500https://shimo.im/sheet/Utl2QpUIqkAr3M1X?from=groupmessage&amp;isappinstalled=00gh_eb1395bf42e7oldhomelh01"
 const myName: string = "厦门AHA侦探社"
 const welcomeStr: string = `欢迎来到${roomName}`
