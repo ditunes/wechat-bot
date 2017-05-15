@@ -4,7 +4,7 @@ import { Wechaty, Contact, Room, Message } from 'wechaty'
 const roomName: string = "Scrum回顾游戏和活动引导"
 const resource: string = "Ethan活动报名名单https://shimo.im/sheet/Utl2QpUIqkAr3M1X?from=groupmessage&amp;isappinstalled=0500https://shimo.im/sheet/Utl2QpUIqkAr3M1X?from=groupmessage&amp;isappinstalled=00gh_eb1395bf42e7oldhomelh01"
 const myName: string = "厦门AHA侦探社"
-const welcomeStr: string = `欢迎来到${roomName}`
+const welcomeStr: string = `欢迎来到${roomName},5月18日20点我们将在此群和Ethan面对面，有想问的问题可以提前发给我`
 const noticeStrInSingle: string = `hello，我是${myName}很高兴认识你，如果没有成功邀请您入群，您可以回复 AHA\n我会马上拉你入群！AHA`
 
 Wechaty.instance() // Singleton
