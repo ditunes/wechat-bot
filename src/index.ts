@@ -1,14 +1,12 @@
+//import { Gender } from 'wechaty/dist/src/contact';
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
 import { Wechaty, Contact, Room, Message } from 'wechaty'
-const roomName: string = "厦门区块链活动交流群"
-const resource: string = "这里有一个区块链资源看板快去看看吧，小白欢迎小伙伴们一起添砖加瓦噢 想要往里共享东西的小伙伴"  
-+"把trello注册邮箱发给小助手哦! https://trello.com/b/yWFLtFO8/-"
-const myName: string = "小白助手"
-const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
-const noticeStrInSingle: string = "hello，我是小白很高兴认识你，如果没有成功邀请您入群，您可以回复:"
-    + "比特币\n"
-    + "我会马上拉你入群！haha"
-
+const roomName: string = "Scrum回顾游戏和活动引导"
+const resource: string = "Ethan活动报名名单https://shimo.im/sheet/Utl2QpUIqkAr3M1X?from=groupmessage&amp;isappinstalled=0500https://shimo.im/sheet/Utl2QpUIqkAr3M1X?from=groupmessage&amp;isappinstalled=00gh_eb1395bf42e7oldhomelh01"
+const myName: string = "厦门AHA侦探社"
+//const welcomeStr: string = `欢迎来到${roomName},5月18日20点我们将在此群和Ethan面对面，有想问的问题可以提前发给我`
+const noticeStrInSingle: string = `hello，我是${myName}很高兴认识你，我已经邀请你进入群：${roomName} 5月18日20点我们将在此群和Ethan面对面，有想问的问题可以提前发给我哦.`
+const inRoomNotice: string = "如果没有成功邀请您入群，您也可以回复 aha\n我会马上拉你入群！aha"
 Wechaty.instance() // Singleton
     .on('scan', (url, code) => {
         let loginUrl = url.replace('qrcode', 'l')
@@ -23,14 +21,18 @@ Wechaty.instance() // Singleton
                 return;
             }
             room.on("join", async (inviteeList, inviter) => {
+                console.log(inviteeList);
                 inviteeList.forEach((item) => {
                     console.log(`来人了：${item}`)
-                    if (room) {
-                        room.say(welcomeStr, item)
-                    }
+                    // if (room) {
+                    //     if (item.gender() == Gender.Male || item.gender() == Gender.Unknown) {
+                    //         room.say("hello 帅哥" + welcomeStr, item)
+                    //     } else {
+                    //         room.say("hello 美女" + welcomeStr, item)
+                    //     }
+                    // }
                 })
             })
-            testAddSomeone(room);
         }, 2000)
     })
     .on('friend', async (contact: Contact, request?: FriendRequest) => {
@@ -45,60 +47,80 @@ Wechaty.instance() // Singleton
         let room = await Room.find({ topic: roomName })
         if (room != null && newFriend != null) {
             addAllContract(room, [newFriend]);
+            contact.name();
             contact.say(noticeStrInSingle);
+            contact.say(inRoomNotice);
         } else {
             console.log(room == null ? "房间不存在" : "新朋友不存在");
         }
     }).on('message', async (message: Message) => {
-        let room = await Room.find({ topic: roomName });
-        if(!room){
-            return;
-        }
-        let msgRoom = message.room();
-        let toContact = message.to();
         if (message.self()) {
             return;
         }
-        if(toContact && toContact.name() == myName ){
-            doActionByCommandInSingle(room,message, message.from())
-        }
+        doHelp(message);
+        doMainRoomMsg(message);
 
-        if (room && msgRoom) {
-            if (msgRoom.topic() !== room.topic()) {
-                return;
-            }
-           
-            filterTargetRoomMsg(room, message);
-            doActionByCommand(room, message);
-        }
-        
     })
     .init()
+async function doHelp(message: Message): Promise<void> {
+    let room = await Room.find({ topic: "Ethan活动组织者" });
+    let msgRoom = message.room();
+    let toContact = message.to();
+    console.log("收到指令:" + message.content())
+    if (room && msgRoom) {
+        if (msgRoom.topic() !== room.topic()) {
+            return;
+        }
+        
+        if (toContact && toContact.name() == myName) {
+            let command = message.content()
+            if (command.includes("@" + myName)) {
+                console.log(command)
+                command = command.replace("@" + myName, "").trim();
+                 if (command === "报名") {
+                    room.say(resource, message.from());
+                 }
+            }
+        }
+    }
+}
+async function doMainRoomMsg(message: Message): Promise<void> {
+    let room = await Room.find({ topic: roomName });
+    if (!room) {
+        return;
+    }
+    let msgRoom = message.room();
+    let toContact = message.to();
+    if (toContact && toContact.name() == myName) {
+        doActionByCommandInSingle(room, message, message.from())
+    }
+
+    if (room && msgRoom) {
+        if (msgRoom.topic() !== room.topic()) {
+            return;
+        }
+        filterTargetRoomMsg(room, message);
+        doActionByCommand(room, message);
+    }
+}
 function doActionByCommand(room: Room, msg: Message): void {
     let command = msg.content();
     if (command.includes("@" + myName)) {
         command = command.replace("@" + myName, "").trim();
-        if (command === "比特币") {
-            console.log("收到指令:" + command)
-            room.say(resource, msg.from());
-        }
+        // if (command === "比特币") {
+        //     console.log("收到指令:" + command)
+        //     room.say(resource, msg.from());
+        // }
     }
+
 }
 
-function doActionByCommandInSingle(room: Room,msg: Message, contact:Contact): void {
-    if(msg.content()==="比特币"){
-        console.log(`拉人入群${contact}`) 
+function doActionByCommandInSingle(room: Room, msg: Message, contact: Contact): void {
+    if (msg.content().toLowerCase() ==  "aha") {
+        console.log(`拉人入群${contact}`)
         room.add(contact);
     }
 }
-
- async function testAddSomeone(room:Room):Promise<void>{
-      let contact = await Contact.find({ alias: "乾坤" });
-            if (contact == null) {
-                return;
-            }
-            addAllContract(room, [contact]);
- }
 
 
 function processContactListInRoom(room: Room, list: Array<Contact>, handler: (r: Room, c: Contact) => void): void {
