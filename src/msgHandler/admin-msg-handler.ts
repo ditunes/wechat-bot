@@ -35,7 +35,7 @@ export class AdminMsgHandler implements BotMsgHandler {
 
 async function sayMsgToTargetContracts(contacts: Contact[], msgs: Array<string>) {
     let index = 0;
-    let total = 3//contacts.length;
+    let total = contacts.length;
     console.log(`he ${contacts} `)
     let timer = setInterval(async () => {
         msgs.forEach(item => {
@@ -46,7 +46,7 @@ async function sayMsgToTargetContracts(contacts: Contact[], msgs: Array<string>)
             clearInterval(timer);
         }
         index++;
-    }, 2000);
+    }, 5000);
 }
 
 async function sayMsgToAllContract(msgs: Array<string>) {
