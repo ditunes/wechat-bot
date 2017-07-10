@@ -45,6 +45,7 @@ Wechaty.instance() // Singleton
             contact.name();
             contact.say(noticeStrInSingle);
             contact.say(inRoomNotice);
+            contact.say("您也可以按如下指令进行操作\n"+"回复 aha :加入季东来故事高手活动群\n"+"回复 报名 : 获取成为故事高手报名链接");
         } else {
             console.log(room == null ? "房间不存在" : "新朋友不存在");
         }

@@ -5,6 +5,9 @@ import { Message } from 'wechaty'
 export class BotMsgProcessor{
     list:Array<BotMsgHandler> =[ new AdminMsgHandler(),new PrivateMsgHandler()]
     process :(msg:Message)=>void = (msg)=>{
+        if(msg.from().self()){
+            return ;
+        }
         this.list.some((element,index, array) => {
             if(element.isSupport(msg)){
                 if(!element.doMsgProcess(msg)){
