@@ -40,7 +40,7 @@ async function sayMsgToTargetContracts(contacts: Contact[], msgs: Array<string>)
     let timer = setInterval(async () => {
         msgs.forEach(item => {
             console.log(contacts[index]);
-            contacts[index].say(item);
+            contacts[index].say(contacts[index].name()+" "+item);
         })
         if (index >= total) {
             clearInterval(timer);
