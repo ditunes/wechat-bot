@@ -66,7 +66,7 @@ let commondList: CommandProcessor = {
         return true;
     },
     "报名":(msg:string ,from:Contact):Boolean =>{
-        from.say("以下是季东成为故事高手报名链接\n"+resource_url);
+        from.say("以下是季东来成为故事高手报名链接\n"+resource_url);
         return true;
     },
     "default": (msg: string, from: Contact): Boolean => {
