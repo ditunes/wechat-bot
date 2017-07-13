@@ -1,13 +1,12 @@
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
-import { Wechaty, Contact, Room, Message } from 'wechaty'
-const roomName: string = "厦门区块链活动交流群"
-const resource: string = "这里有一个区块链资源看板快去看看吧，小白欢迎小伙伴们一起添砖加瓦噢 想要往里共享东西的小伙伴"  
-+"把trello注册邮箱发给小助手哦! https://trello.com/b/yWFLtFO8/-"
-const myName: string = "小白助手"
-const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
-const noticeStrInSingle: string = "hello，我是小白很高兴认识你，如果没有成功邀请您入群，您可以回复:"
-    + "比特币\n"
-    + "我会马上拉你入群！haha"
+import { Wechaty, Contact, Message } from 'wechaty'
+import * as rm from 'typed-rest-client/RestClient'
+//const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
+// const noticeStrInSingle: string = "hello，我是小白很高兴认识你，如果没有成功邀请您入群，您可以回复:"
+//     + "比特币\n"
+//     + "我会马上拉你入群！haha"
+const default_msg: string = "您可以输入币别进行查询当前行情如btc、eth";
+
 
 Wechaty.instance() // Singleton
     .on('scan', (url, code) => {
@@ -17,21 +16,21 @@ Wechaty.instance() // Singleton
     })
     .on('login', async (user) => {
         console.log(`User ${user} logined`)
-        setTimeout(async () => {
-            let room = await Room.find({ topic: roomName });
-            if (!room) {
-                return;
-            }
-            room.on("join", async (inviteeList, inviter) => {
-                inviteeList.forEach((item) => {
-                    console.log(`来人了：${item}`)
-                    if (room) {
-                        room.say(welcomeStr, item)
-                    }
-                })
-            })
-            testAddSomeone(room);
-        }, 2000)
+        // setTimeout(async () => {
+        //     let room = await Room.find({ topic: roomName });
+        //     if (!room) {
+        //         return;
+        //     }
+        //     room.on("join", async (inviteeList, inviter) => {
+        //         inviteeList.forEach((item) => {
+        //             console.log(`来人了：${item}`)
+        //             if (room) {
+        //                 room.say(welcomeStr, item)
+        //             }
+        //         })
+        //     })
+        //     testAddSomeone(room);
+        // }, 2000)
     })
     .on('friend', async (contact: Contact, request?: FriendRequest) => {
         let newFriend;
@@ -42,101 +41,40 @@ Wechaty.instance() // Singleton
         } else {        // 2. confirm friend ship
             console.log('new friend ship confirmed with ' + contact)
         }
-        let room = await Room.find({ topic: roomName })
-        if (room != null && newFriend != null) {
-            addAllContract(room, [newFriend]);
-            contact.say(noticeStrInSingle);
-        } else {
-            console.log(room == null ? "房间不存在" : "新朋友不存在");
-        }
+        newFriend.say(default_msg);
     }).on('message', async (message: Message) => {
-        let room = await Room.find({ topic: roomName });
-        if(!room){
+        if (message.from().self()) {
             return;
         }
-        let msgRoom = message.room();
-        let toContact = message.to();
-        if (message.self()) {
-            return;
-        }
-        if(toContact && toContact.name() == myName ){
-            doActionByCommandInSingle(room,message, message.from())
-        }
+        let userAgent = 'User-Agent:Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N)'
+            + 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36'
 
-        if (room && msgRoom) {
-            if (msgRoom.topic() !== room.topic()) {
-                return;
-            }
-           
-            filterTargetRoomMsg(room, message);
-            doActionByCommand(room, message);
+        let restc: rm.RestClient = new rm.RestClient(userAgent,
+            'http://data.bter.com');
+        let content = message.content().trim();
+        if(!/^\w+$/.test(content)){
+               return ; 
         }
-        
+       
+    
+        console.log("receive :"+content);
+        let res: rm.IRestResponse<BiterQueryResult> = await restc.get<BiterQueryResult>('/api2/1/ticker/' + content + '_cny');
+          console.log(res);
+         console.log(res.result);
+        if (res.statusCode != 200 || res.result.result == "false") {
+            return;
+        }
+        console.log(new Date().toString());
+        let date = new Date().toLocaleTimeString("zh-cn",{timeZone:"Asia/Shanghai",hour12:false});
+        message.from().say(`【比特儿】${content} 当前交易价格：¥${res.result.last} 涨幅：${res.result.percentChange.toPrecision(4)} 时间:${date}`);
+
     })
     .init()
-function doActionByCommand(room: Room, msg: Message): void {
-    let command = msg.content();
-    if (command.includes("@" + myName)) {
-        command = command.replace("@" + myName, "").trim();
-        if (command === "比特币") {
-            console.log("收到指令:" + command)
-            room.say(resource, msg.from());
-        }
-    }
+
+class BiterQueryResult {
+    result: string
+    last: number
+    percentChange: number
+    code: number
 }
 
-function doActionByCommandInSingle(room: Room,msg: Message, contact:Contact): void {
-    if(msg.content()==="比特币"){
-        console.log(`拉人入群${contact}`) 
-        room.add(contact);
-    }
-}
-
- async function testAddSomeone(room:Room):Promise<void>{
-      let contact = await Contact.find({ alias: "乾坤" });
-            if (contact == null) {
-                return;
-            }
-            addAllContract(room, [contact]);
- }
-
-
-function processContactListInRoom(room: Room, list: Array<Contact>, handler: (r: Room, c: Contact) => void): void {
-    if (!room) {
-        return;
-    }
-    list.forEach(element => {
-        if (element) {
-            handler(room, element);
-        }
-    });
-    return;
-}
-
-function filterTargetRoomMsg(room: Room, message: Message) {
-    if (message.content().match("美女|fuck|妈蛋|我操|傻逼")) {
-        room.say("不要说脏话", message.from());
-        //room.del(message.from());
-    }
-    console.log(`Message: ${message}`);
-}
-
-// function removeContact(room: Room, list: Array<Contact>): void {
-//     processContactListInRoom(room, list, (room, contact) => {
-//         room.del(contact);
-//     });
-//     return;
-// }
-
-function addAllContract(room: Room, list: Array<Contact>): void {
-    processContactListInRoom(room, list, (room, contact) => {
-        console.log(contact);
-        let name = contact.alias()
-        name = name == null ? contact.name() : name;
-        try {
-            room.add(contact);
-        } catch (error) {
-            console.log(`${name}拉入${room.topic()}失败`)
-        }
-    })
-}

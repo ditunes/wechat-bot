@@ -14,6 +14,7 @@
     "express": "^4.15.2",
     "qrcode-terminal": "^0.11.0",
     "request": "^2.81.0",
+    "typed-rest-client": "^0.10.0",
     "wechat": "^2.1.0",
     "wechaty": "^0.7.71"
   }
