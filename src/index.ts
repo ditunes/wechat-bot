@@ -1,5 +1,5 @@
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
-import { Wechaty, Contact, Message } from 'wechaty'
+import { Wechaty, Contact, Message} from 'wechaty'
 import * as rm from 'typed-rest-client/RestClient'
 //const welcomeStr: string = `欢迎来到${roomName}, 快发送关键词：\n比特币@${myName}\n 有彩蛋哦`
 // const noticeStrInSingle: string = "hello，我是小白很高兴认识你，如果没有成功邀请您入群，您可以回复:"
@@ -52,21 +52,27 @@ Wechaty.instance() // Singleton
         let restc: rm.RestClient = new rm.RestClient(userAgent,
             'http://data.bter.com');
         let content = message.content().trim();
-        if(!/^\w+$/.test(content)){
-               return ; 
+        if (!/^\w+$/.test(content)) {
+            return;
         }
-       
-    
-        console.log("receive :"+content);
+
+
+        console.log("receive :" + content);
         let res: rm.IRestResponse<BiterQueryResult> = await restc.get<BiterQueryResult>('/api2/1/ticker/' + content + '_cny');
-          console.log(res);
-         console.log(res.result);
+        console.log(res);
+        console.log(res.result);
         if (res.statusCode != 200 || res.result.result == "false") {
             return;
         }
         console.log(new Date().toString());
-        let date = new Date().toLocaleTimeString("zh-cn",{timeZone:"Asia/Shanghai",hour12:false});
-        message.from().say(`【比特儿】${content} 当前交易价格：¥${res.result.last} 涨幅：${res.result.percentChange.toPrecision(4)} 时间:${date}`);
+        let date = new Date().toLocaleTimeString("zh-cn", { timeZone: "Asia/Shanghai", hour12: false });
+        let room = message.room();
+        let contentStr:string = `【比特儿】${content} 当前交易价格：¥${res.result.last} 涨幅：${res.result.percentChange.toPrecision(4)} 时间:${date}`;
+        if (room != null) {
+            room.say(contentStr)
+        } else {
+            message.from().say(contentStr);
+        }
 
     })
     .init()
