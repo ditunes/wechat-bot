@@ -114,7 +114,8 @@ new CurrencyQueryInfo("YbCoin","YBC"),
 new CurrencyQueryInfo("ZCoin","XZC"),
 new CurrencyQueryInfo("FairCoin","FAIR"),
 new CurrencyQueryInfo("Crown","CRW"),
-new CurrencyQueryInfo("adToken","ADT")
+new CurrencyQueryInfo("adToken","ADT"),
+new CurrencyQueryInfo("OmiseGo","omg")
 ];
 
 Wechaty.instance() // Singleton
@@ -173,8 +174,7 @@ Wechaty.instance() // Singleton
         console.log(res.result[0].price_cny);
         let price = Number.parseFloat(res.result[0].price_cny).toFixed(2);
         let contentStr: string = `【${res.result[0].name}-${res.result[0].symbol}】\n` + `全球币价：¥${price}\n`
-            + `涨跌幅度：${res.result[0].percent_change_1h}% \n`
-            + `交易金额：¥${res.result[0].market_cap_cny} \n` +
+            + `涨跌幅度：${res.result[0].percent_change_1h}% \n`+
             `更新时间：${date}`
         if (room != null) {
             room.say(contentStr)
