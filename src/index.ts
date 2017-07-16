@@ -139,9 +139,9 @@ Wechaty.instance() // Singleton
         }
         newFriend.say(default_msg);
     }).on('message', async (message: Message) => {
-        // if (message.from().self()) {
-        //     return;
-        // }
+        if (message.from().self()) {
+            return;
+        }
         let userAgent = 'User-Agent:Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N)'
             + 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36'
 
