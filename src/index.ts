@@ -118,9 +118,14 @@ new CurrencyQueryInfo("adToken","ADT"),
 new CurrencyQueryInfo("OmiseGo","omg")
 ];
 
+async function timeout(time:Number) {
+     return new Promise(resolve => setTimeout(resolve, time));
+}
+
 Wechaty.instance() // Singleton
-    .on('scan', (url, code) => {
+    .on('scan', async (url, code) => {
         let loginUrl = url.replace('qrcode', 'l')
+        
         require('qrcode-terminal').generate(loginUrl)
         console.log(url)
     })
@@ -177,8 +182,10 @@ Wechaty.instance() // Singleton
             + `涨跌幅度：${res.result[0].percent_change_1h}% \n`+
             `更新时间：${date}`
         if (room != null) {
+            await timeout(5000);
             room.say(contentStr)
         } else {
+            await timeout(5000);
             message.from().say(contentStr);
         }
 
@@ -200,6 +207,6 @@ class BiterQueryResult {
  }
 
 
-
+ 
 
 
