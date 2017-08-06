@@ -14,3 +14,5 @@ quit
 qqqqshut
 shutdown
 exit
+ping wx.qq.com
+exit
