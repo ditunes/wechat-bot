@@ -37,7 +37,7 @@ export class RoomMsgHandler implements BotMsgHandler {
         return isContinued;
     }
     isSupport(msg: Message): boolean {
-        return msg.room() != null && BOT_MODE.isBotMode() //&& !msg.from().self();
+        return msg.room() != null && BOT_MODE.isBotMode() && !msg.from().self();
     }
 }
 
