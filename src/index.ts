@@ -24,10 +24,10 @@ Wechaty.instance() // Singleton
         },10000);
     })
     .on('friend', async (contact: Contact, request?: FriendRequest) => {
-        let newFriend;
+        //let newFriend;
         if (request) {  // 1. request to be friend from new contact
             request.accept()
-            newFriend = request.contact;
+            //newFriend = request.contact;
             console.log('auto accepted for ' + contact + ' with message: ' + request.hello)
         } else {        // 2. confirm friend ship
             console.log('new friend ship confirmed with ' + contact)

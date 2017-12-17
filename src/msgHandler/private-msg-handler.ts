@@ -31,6 +31,7 @@ export class PrivateMsgHandler implements BotMsgHandler {
         return isContinued;
     }
     isSupport(msg: Message): boolean {
+        //return false;
         return WeChatyApiX.isPrivateTalkWithMe(msg) && ! msg.from().self() && BOT_MODE.isBotMode();
     }
 }

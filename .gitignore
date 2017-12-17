@@ -4,3 +4,4 @@ dist
 .pki
 .v8flags*.json
 .config
+.sudo_as_admin_successful

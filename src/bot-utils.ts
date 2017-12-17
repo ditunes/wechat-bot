@@ -1,6 +1,9 @@
 import {Message,Room} from "wechaty";
 export class WeChatyApiX {
   public static isTalkingToMePrivately = function(m:Message):boolean {
+   if(!m.rawObj){
+     return false;
+   }
     return m.rawObj['MMIsChatRoom'] == false; // consider add m.to().self()
   };
 
