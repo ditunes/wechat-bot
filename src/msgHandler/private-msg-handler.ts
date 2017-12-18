@@ -39,7 +39,7 @@ export class PrivateMsgHandler implements BotMsgHandler {
 
 interface CommandProcessor {
     [commond: string]: (msg: string, from: Contact) => Boolean
-}
+} 
 
 let commondList: CommandProcessor = {
     "^\\w+$": (msg: string, from: Contact): Boolean => {
@@ -47,7 +47,7 @@ let commondList: CommandProcessor = {
             if (item == null) {
                 return;
             }
-            sayToContact(from, item);
+            //sayToContact(from, item);
         });
         return true;
     },
