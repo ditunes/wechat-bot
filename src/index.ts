@@ -2,6 +2,7 @@
 import { FriendRequest } from 'wechaty/dist/src/friend-request';
 import { Wechaty, Room, Contact, Message } from 'wechaty'
 import { setAllRoom, getAllRoom } from './global';
+import { BOT_MSG_PROC } from './BotMsgProcessor';
 Wechaty.instance() // Singleton
     .on('scan', async (url, code) => {
         let loginUrl = url.replace('qrcode', 'l')
@@ -25,7 +26,7 @@ Wechaty.instance() // Singleton
     .on('friend', async (contact: Contact, request?: FriendRequest) => {
         //let newFriend;
         if (request) {  // 1. request to be friend from new contact
-            request.accept()
+            await request.accept()
             contact.say("hello")
             let list:Room[] = getAllRoom();
             let index:number = parseInt(Math.random()*list.length+"");
@@ -33,7 +34,7 @@ Wechaty.instance() // Singleton
             //list[index].refresh();
             const result = await list[index].add(contact);
             if(result){
-                list[index].say("欢迎@"+contact.name());
+                list[index].say("欢迎@"+contact.name()+"加入SWFT社区，您可以输入币名查询当前币价");
             }else{
                 console.log("error")
             }
@@ -42,7 +43,7 @@ Wechaty.instance() // Singleton
             console.log('new friend ship confirmed with ' + contact)
         }
     }).on('message', async (message: Message) => {
-       
+        BOT_MSG_PROC.process(message);
     }).init();
 
 

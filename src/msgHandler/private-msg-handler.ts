@@ -31,7 +31,6 @@ export class PrivateMsgHandler implements BotMsgHandler {
         return isContinued;
     }
     isSupport(msg: Message): boolean {
-        //return false;
         return WeChatyApiX.isPrivateTalkWithMe(msg) && ! msg.from().self() && BOT_MODE.isBotMode();
     }
 }
@@ -47,13 +46,13 @@ let commondList: CommandProcessor = {
             if (item == null) {
                 return;
             }
-            //sayToContact(from, item);
+            sayToContact(from, item);
         });
         return true;
     },
     "default": (msg: string, from: Contact): Boolean => {
         let content = [
-            "不好意思，没能理解您的意思，请按如下方式获取帮助(机器人值守):",
+            "不好意思，没能理解您的意思，请按如下方式获取帮助:",
             "输入币名获取最新信息"
         ]
         let res = content.reduce((sum, val) => {
