@@ -7,7 +7,6 @@ import { CoinQuery } from "../coinQueryService";
 import { sayToRoom } from '../say';
 export class RoomMsgHandler implements BotMsgHandler {
     doMsgProcess(msg: Message): boolean {
-
         let room: Room | null = msg.room();
         if (room == null) {
             return false;
