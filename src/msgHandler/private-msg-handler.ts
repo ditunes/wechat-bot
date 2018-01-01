@@ -10,7 +10,7 @@ export class PrivateMsgHandler implements BotMsgHandler {
         console.log("对私聊进行处理");
         let isContinued = true;
         let content = msg.content().toLocaleLowerCase().trim();
-        let isProcessed: boolean = Object.keys(commondList).some(command => {
+        Object.keys(commondList).some(command => {
             if (new RegExp(command).test(content)) {
                 console.log("收到消息包含指令" + command)
                 console.log(content);
@@ -21,13 +21,13 @@ export class PrivateMsgHandler implements BotMsgHandler {
             }
             return false;
         });
-        if (!isProcessed) {
-            if (BOT_MODE.isBotMode()) {
-                if (commondList["default"](content, msg.from())) {
-                    isContinued = false;
-                };
-            }
-        }
+        // if (!isProcessed) {
+        //     if (BOT_MODE.isBotMode()) {
+        //         if (commondList["default"](content, msg.from())) {
+        //             isContinued = false;
+        //         };
+        //     }
+        // }
         return isContinued;
     }
     isSupport(msg: Message): boolean {
