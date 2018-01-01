@@ -53,8 +53,7 @@ let commondList: CommandProcessor = {
     },
     "default": (msg: string, from: Contact): Boolean => {
         let content = [
-            "不好意思，没能理解您的意思，请按如下方式获取帮助(机器人值守):",
-            "输入币名获取最新信息"
+            "不好意思，没能理解您的意思，请输入币名获取最新价格信息如btc"
         ]
         let res = content.reduce((sum, val) => {
             return sum + val + "\n";
