@@ -18,11 +18,6 @@ Wechaty.instance() // Singleton
             console.log(`allRoom : ${roomList}`);
              console.log("查询群结束")
             setAllRoom(roomList);
-            roomList.forEach(item => {
-                item.on("join",(inviteeList, inviter) => {
-                      item.say("欢迎@"+inviter.name()+"加入Swft社区，我是SwftCoin智能机器人,您可以直接输入币名查询当前价格，如btc")  
-                })
-            })
         } catch (error) {
             console.log(error);
         }
