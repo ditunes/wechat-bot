@@ -132,7 +132,8 @@ export class CoinQueryService {
         new CurrencyQueryInfo("Crown", "CRW"),
         new CurrencyQueryInfo("adToken", "ADT"),
         new CurrencyQueryInfo("OmiseGo", "omg"),
-         new CurrencyQueryInfo("bodhi", "bot")
+        new CurrencyQueryInfo("bodhi", "bot"),
+        new CurrencyQueryInfo("Swftcoin", "SWFTC")
     ];
     userAgent: string = 'User-Agent:Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N)'
     + 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36'
@@ -172,7 +173,7 @@ export class CoinQueryService {
         let price = Number.parseFloat(result.price_cny).toFixed(2);
         return `【${result.name}-${result.symbol}】\n` + `全球币价：¥${price}\n`
             + `涨跌幅度：${result.percent_change_1h}% \n` +
-            `更新时间：${date}`
+            `更新时间：${date} \n`+`数字货币AI为您提供最优兑换价：https://exchange.swftcoin.com/swft-v2/swft2.0/index.html`
     }
 }
 
