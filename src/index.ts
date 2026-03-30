@@ -59,8 +59,9 @@ Wechaty.instance() // Singleton
         if (message.self()) {
             return;
         }
-        if(toContact && toContact.name() == myName ){
-            doActionByCommandInSingle(room,message, message.from())
+        let fromContact = message.from();
+        if(toContact && toContact.name() == myName && fromContact){
+            doActionByCommandInSingle(room,message, fromContact)
         }
 
         if (room && msgRoom) {
@@ -80,7 +81,10 @@ function doActionByCommand(room: Room, msg: Message): void {
         command = command.replace("@" + myName, "").trim();
         if (command === "比特币") {
             console.log("收到指令:" + command)
-            room.say(resource, msg.from());
+            let from = msg.from();
+            if (from) {
+                room.say(resource, from);
+            }
         }
     }
 }
@@ -115,7 +119,10 @@ function processContactListInRoom(room: Room, list: Array<Contact>, handler: (r:
 
 function filterTargetRoomMsg(room: Room, message: Message) {
     if (message.content().match("美女|fuck|妈蛋|我操|傻逼")) {
-        room.say("不要说脏话", message.from());
+        let from = message.from();
+        if (from) {
+            room.say("不要说脏话", from);
+        }
         //room.del(message.from());
     }
     console.log(`Message: ${message}`);
