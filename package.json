@@ -1,7 +1,7 @@
 {
   "name": "wechat-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "A WeChat assistant bot based on Wechaty that auto-accepts friends, invites contacts to a group, greets members, replies to commands, and filters offensive messages.",
   "main": "src/index.js",
   "scripts": {
     "start": "tsc && node ./dist/index.js",
